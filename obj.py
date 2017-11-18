@@ -64,7 +64,7 @@ class Obj(Sdf):
 		(x1,y1)=args[0],args[1]
 		(x2,y2)=args[2],args[3]
 		(x3,y3)=args[4],args[5]
-		color=args[6]
+		material=args[6]
 		# convert to 3 planes
 		def _initArgs(x0,y0, x1,y1,x2,y2):
 			args=[]
@@ -75,7 +75,7 @@ class Obj(Sdf):
 			args.append((A**2*y0-A*B*x0-B*C)/(A**2+B**2))
 			args.append(x0-args[0])
 			args.append(y0-args[1])
-			args.append(color)
+			args.append(material)
 			# print(args)
 			return args
 		self.sdf=(Sdf.DirectedPlane(_initArgs(x1,y1,x2,y2,x3,y3))*Sdf.DirectedPlane(_initArgs(x2,y2,x1,y1,x3,y3))*Sdf.DirectedPlane(_initArgs(x3,y3,x1,y1,x2,y2))).sdf
