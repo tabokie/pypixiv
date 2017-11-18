@@ -1,3 +1,4 @@
+import sys
 import operator
 
 __author__ = 'tabokie'
@@ -54,10 +55,10 @@ class Color(object):
 				t[i]+=1
 			elif t[i]>1:
 				t[i]-=1
-		f1=(lambda p,q,t: p+((q-p)*6*t))
+		f1=(lambda p,q,t: p+(q-p)*6*t)
 		f2=(lambda p,q,t: q)
-		f3=(lambda p,q,t: p+((q-p)*6*(2/3+t)))
-		f4=(lambda p,q,r: p)
+		f3=(lambda p,q,t: p+(q-p)*6*(2/3-t))
+		f4=(lambda p,q,t: p)
 		rgb=[0,0,0]
 		for i in range(3):
 			if t[i]<1/6:
@@ -68,6 +69,10 @@ class Color(object):
 				rgb[i]=f3(p,q,t[i])
 			else:
 				rgb[i]=f4(p,q,t[i])
+			if rgb[i]>1 or rgb[i]<0:
+				print(h,s,l)
+				print(rgb)
+				sys.exit(0)
 		return rgb
 	def _operation(self,other,op):
 		r=op(self.r,other.r)
