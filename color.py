@@ -22,7 +22,8 @@ class Color(object):
 			h=(c.b-c.r)/(upper-lower)/6.0+1.0/3
 		elif upper==c.b:
 			h=(c.r-c.g)/(upper-lower)/6.0+2.0/3
-		return H
+		# print(c.r,c.g,c.b,'->h=',h)
+		return h
 	@staticmethod
 	def S(c):
 		upper=max([c.r,c.g,c.b])
@@ -33,18 +34,26 @@ class Color(object):
 			s=(upper-lower)/(upper+lower)
 		else:
 			s=(upper-lower)/(2-upper-lower)
+		# print(c.r,c.g,c.b,'->s=',s)
 		return s
 	@staticmethod
 	def L(c):
 		upper=max([c.r,c.g,c.b])
 		lower=min([c.r,c.g,c.b])
 		l=(upper+lower)/2.0
+		# print(c.r,c.g,c.b,'->l=',l)
 		return l
 	@staticmethod
 	def HSL2RGB(h,s,l):
+		# print('hsl:',h,s,l)
 		q=l*(1+s) if l<0.5 else l+s-l*s
 		p=2*l-q
-		t=[i+1 if i<0 else i-1 for i in [h+1/3,h,h-1/3]]
+		t=[h+1/3,h,h-1/3]
+		for i in range(3):
+			if t[i]<0:
+				t[i]+=1
+			elif t[i]>1:
+				t[i]-=1
 		f1=(lambda p,q,t: p+((q-p)*6*t))
 		f2=(lambda p,q,t: q)
 		f3=(lambda p,q,t: p+((q-p)*6*(2/3+t)))
@@ -71,13 +80,17 @@ class Color(object):
 	def __truediv__(self,deno):
 		#numericType=[int,float]
 		return Color(self.r/deno,self.g/deno,self.b/deno,self.a/deno)
+	def __rmul__(self,k):
+		newColor=Color.HSL2RGB(Color.H(self),Color.S(self),Color.L(self)*k)
+		# print('rmul:',self.r,self.g,self.b,'*',k,'=',newColor[0],newColor[1],newColor[2])
+		return Color(newColor[0],newColor[1],newColor[2],self.a)
 	# compose color
 	# use other's lightness
 	# rgb->hsl->rgb
 	def __mul__(self,other):
 		# get 
-		l=L(other)
-		newColor=HSL2RGB(H(self),S(self),l)
+		newColor=Color.HSL2RGB(Color.H(self),Color.S(self),Color.L(other))
+		# print('mul:',self.r,self.g,self.b,'*',other.r,other.g,other.b,'=',newColor[0],newColor[1],newColor[2])
 		return Color(newColor[0],newColor[1],newColor[2],self.a)
 	@staticmethod
 	def printColor(c):
@@ -92,6 +105,9 @@ class Color(object):
 	@staticmethod
 	def black():
 		return Color(0,0,0,1)
+	@staticmethod
+	def red():
+		return Color(1,0,0,1)
 	@staticmethod
 	def zero():
 		return Color(0,0,0,0)
