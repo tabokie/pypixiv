@@ -1,5 +1,7 @@
 import operator
 
+__author__ = 'tabokie'
+
 class Color(object):
 	def __init__(self,r,g,b,a):
 		self.r=r

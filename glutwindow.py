@@ -91,7 +91,7 @@ class GlutWindow(object):
             (0, 1), (-1, 1, 0),
         ]
 
-    def update(self, dt=100000):
+    def update(self, dt=1000000):
         # clear
         self.clear()
 

@@ -1,5 +1,7 @@
 from color import Color
 
+__author__ = 'tabokie'
+
 class Canvas(object):
 	def __init__(self,w,h,p):
 		self.width=w
