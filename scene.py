@@ -64,15 +64,19 @@ class Scene(object):
 		sdf=self.objects.sdf
 		gy=(sdf(x+Err,y)[0]-sdf(x-Err,y)[0])/2/Err
 		gx=(sdf(x,y+Err)[0]-sdf(x,y-Err)[0])/2/Err
-		dx-=2*(dx*gx+dy*gy)*gx
-		dy-=2*(dx*gx+dy*gy)*gy
+		n=2 # temporary value
+		(hx,hy)=(dx+gx)/n,(dy+gy)/n
+		norm=(dx**2+dy**2-hx**2-hy**2)**0.5
+		gx=norm*gx+hx
+		gy=norm*gy+hy
 		# call trace method
-		return self.trace(x+1.2*gx*Err,y+1.2*gy*Err,dx,dy,depth-1)
+		return self.trace(x-1.2*gx*Err,y-1.2*gy*Err,dx,dy,depth-1)
 	def reset(self):
 		self.objects=Obj(-1)
 	def scene_0(self):
 		# self.objects=Obj(2,[200,200,0.5,0.5,Color.white()])
-		self.objects=Obj(3,[250,220,180,140,100,300,Material(color=Color.white(),illu=0.5,reflect=0.8,refract=0.2)])+Obj(0,[100,100,50,Material(color=Color.red(),illu=1)])
+		# self.objects=Obj(3,[250,220,180,140,100,300,Material(color=Color.black(),illu=0,reflect=1,refract=0)])+Obj(0,[100,100,50,Material(color=Color.red(),illu=1)])
+		self.objects=Obj(3,[100,150,125,150,125,0,Material(reflect=1)])+Obj(3,[175,0,175,150,200,150,Material(reflect=1)])+Obj(3,[0,150,300,300,150,250,Material(reflect=1)])+Obj(0,[150,0,25,Material(color=Color.white(),illu=1)])+Obj(0,[0,300,30,Material(color=Color.red(),illu=1)])
 		# self.objects=Obj(0,[100,100,50,Color.white()])+Obj(0,[150,190,50,Color.black()])+Obj(1,[200,200,0.5,0.5,Color.white()])
 	def scene404(self):
 		self.reset()
