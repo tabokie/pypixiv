@@ -47,7 +47,10 @@ class Scene(object):
 			return material.color # seaching ends
 		# sample=Color.zero()
 		materialColor=material.color
-		return material.illu*materialColor+material.reflect*(materialColor*self.trace_reflect(x,y,dx,dy,depth))# +material.refract*(materialColor*trace_refract(x,y,dx,dy,depth))
+		natureColor=material.illu*materialColor
+		reflectColor=material.reflect*(materialColor*self.trace_reflect(x,y,dx,dy,depth))
+		# refractColor=materialColor.refract*materialColor*trace_refract(x,y,dx,dy,depth)
+		return natureColor + reflectColor # + refractColor
 	def trace_reflect(self,x,y,dx,dy,depth):
 		Err=1
 		# calc reflect ray
