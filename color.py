@@ -114,6 +114,9 @@ class Color(object):
 	def red():
 		return Color(1,0,0,1)
 	@staticmethod
+	def blue():
+		return Color(0,0,1,1)
+	@staticmethod
 	def zero():
 		return Color(0,0,0,0)
 	@staticmethod
